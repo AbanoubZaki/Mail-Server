@@ -1,0 +1,82 @@
+package eg.edu.alexu.csd.datastructure.mailServer.cs01_cs30_cs35;
+
+/**
+ * @author Abanoub
+ * @author Amr
+ * @author Kiro
+ *
+ */
+
+import eg.edu.alexu.csd.datastructure.linkedList.cs01_cs35.DoubleLinkedList;
+import eg.edu.alexu.csd.datastructure.mailServer.IPriorityQueue;
+
+class PQNode {
+	int key;
+	Object element;
+	void setKey(final int theKey) {
+		key = theKey;
+	}
+	void setElement(final Object theElement) {
+		element = theElement;
+	}
+	int getKey() {
+		return key;
+	}
+	Object getElement() {
+		return element;
+	}
+}
+
+public class MyPriorityQueue implements IPriorityQueue {
+
+	/**
+	 * thePriorityQueue.
+	 */
+	DoubleLinkedList thePriorityQueue;
+	/**
+	 * the size.
+	 */
+	int size = new Integer(0);
+
+	@Override
+	public void insert(final Object item, final int key) {
+		if (key <= 0 || item == null) {
+			throw new RuntimeException();
+		}
+		PQNode newNode = new PQNode();
+		newNode.setElement(item);
+		newNode.setKey(key);
+		thePriorityQueue.add(newNode);
+		size++;
+	}
+
+	@Override
+	public Object removeMin() {
+		if (size == 0) {
+			throw new RuntimeException();
+		}
+		Object theMin = ((PQNode) thePriorityQueue.get(0)).getElement();
+		thePriorityQueue.remove(0);
+		size--;
+		return theMin;
+	}
+
+	@Override
+	public Object min() {
+		if (thePriorityQueue.isEmpty()) {
+			throw new RuntimeException();
+		}
+		return ((PQNode) thePriorityQueue.get(0)).getElement();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
+}
