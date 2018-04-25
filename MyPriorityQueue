@@ -36,11 +36,11 @@ public class MyPriorityQueue implements IPriorityQueue {
 	/**
 	 * the size.
 	 */
-	int size = new Integer(0);
+	int size = 0;
 
 	@Override
 	public void insert(final Object item, final int key) {
-		if (key <= 0 || item == null) {
+		if (key <= 0) {
 			throw new RuntimeException();
 		}
 		PQNode newNode = new PQNode();
