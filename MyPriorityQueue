@@ -40,7 +40,7 @@ public class MyPriorityQueue implements IPriorityQueue {
 
 	@Override
 	public void insert(final Object item, final int key) {
-		if (key <= 0) {
+		if (key <= 0 || item == null) {
 			throw new RuntimeException();
 		}
 		PQNode newNode = new PQNode();
