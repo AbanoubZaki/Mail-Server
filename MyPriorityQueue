@@ -1,10 +1,11 @@
 package eg.edu.alexu.csd.datastructure.mailServer.cs01_cs30_cs35;
 
+import eg.edu.alexu.csd.datastructure.linkedList.cs01_cs35.Node;
+
 /**
  * @author Abanoub
  * @author Amr
  * @author Kiro
- *
  */
 
 import eg.edu.alexu.csd.datastructure.linkedList.cs01_cs35.DoubleLinkedList;
@@ -12,18 +13,11 @@ import eg.edu.alexu.csd.datastructure.mailServer.IPriorityQueue;
 
 class PQNode {
 	int key;
-	Object element;
-	void setKey(final int theKey) {
-		key = theKey;
-	}
-	void setElement(final Object theElement) {
-		element = theElement;
-	}
-	int getKey() {
-		return key;
-	}
-	Object getElement() {
-		return element;
+	Object value;
+
+	PQNode(int k, Object v) {
+		key = k;
+		value = v;
 	}
 }
 
@@ -32,51 +26,72 @@ public class MyPriorityQueue implements IPriorityQueue {
 	/**
 	 * thePriorityQueue.
 	 */
-	DoubleLinkedList thePriorityQueue;
-	/**
-	 * the size.
-	 */
-	int size = 0;
+	DoubleLinkedList PQueue = new DoubleLinkedList();
 
 	@Override
 	public void insert(final Object item, final int key) {
 		if (key <= 0 || item == null) {
 			throw new RuntimeException();
 		}
-		PQNode newNode = new PQNode();
-		newNode.setElement(item);
-		newNode.setKey(key);
-		thePriorityQueue.add(newNode);
-		size++;
+		PQNode newNode = new PQNode(key, item);
+		if (PQueue.size() == 0) {
+			PQueue.add(newNode);
+			return;
+		}
+		Node temp1 = PQueue.header.getNext();
+		Node temp2 = PQueue.tailer.getPrev();
+		boolean added = false;
+		int i = 0;
+		int j = PQueue.size()-1;
+		while (true) {
+			if (((PQNode) temp1.getElement()).key > (int) newNode.key) {
+				added = true;
+				PQueue.add(i, newNode);
+				break;
+			} else {
+				temp1 = temp1.getNext();
+			}
+			if (((PQNode) temp2.getElement()).key <= (int) newNode.key) {
+				added = true;
+				PQueue.add(j + 1, newNode);
+				break;
+			} else {
+				temp2 = temp2.getPrev();
+			}
+			i++;
+			j--;
+		}
+		if (!added) {
+			PQueue.add(PQueue.size(), newNode);
+		}
 	}
 
 	@Override
 	public Object removeMin() {
-		if (size == 0) {
+		if (PQueue.size() == 0) {
 			throw new RuntimeException();
 		}
-		Object theMin = ((PQNode) thePriorityQueue.get(0)).getElement();
-		thePriorityQueue.remove(0);
-		size--;
-		return theMin;
+		Object min = ((PQNode) PQueue.get(0)).value;
+		PQueue.remove(0);
+		return min;
 	}
 
 	@Override
 	public Object min() {
-		if (thePriorityQueue.isEmpty()) {
+		if (PQueue.isEmpty()) {
 			throw new RuntimeException();
 		}
-		return ((PQNode) thePriorityQueue.get(0)).getElement();
+		return ((PQNode) PQueue.get(0)).value;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return size == 0;
+		return PQueue.size() == 0;
 	}
 
 	@Override
 	public int size() {
-		return size;
+		return PQueue.size();
 	}
 
 }
