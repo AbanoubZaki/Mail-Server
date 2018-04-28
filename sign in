@@ -1,0 +1,35 @@
+package eg.edu.alexu.csd.datastructure.mailServer.cs01_cs30_cs35;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class signingin {
+	/**
+	 * signing in.
+	 *
+	 * @param email
+	 * @param password
+	 * @return 
+	 * @throws IOException 
+	 */
+	public boolean signin(final String email, final String password) throws IOException {
+		
+		File f1 = new File("../Mail Server/Users/" + email);
+		if (f1.exists()) {
+			File f2 = new File("../Mail Server/Users/" + email + "/Info.txt");
+			String read = new String();
+			BufferedReader in = null;
+			in = new BufferedReader(new FileReader(f2));
+			read = in.readLine();
+			read = in.readLine();
+			in.close();
+			if (read.equals(password)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+}
