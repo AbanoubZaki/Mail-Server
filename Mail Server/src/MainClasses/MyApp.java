@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import DataStructures.SingleLinkedList;
+import GUI.SignInForm;
 import Interfaces.IApp;
 import Interfaces.IContact;
 import Interfaces.IFilter;
@@ -32,9 +33,9 @@ public class MyApp implements IApp {
 	 * @return false if the email name not exist
 	 */
 	@Override
-	public boolean signin(final String email, final String password) {
+	public boolean signin(final String eMail, final String password) {
 		// TODO Auto-generated method stub
-		email.toLowerCase();
+		String email = eMail.toLowerCase();
 		File f1 = new File("../Mail Server/Users/" + email);
 		if (f1.exists()) {
 			File f2 = new File("../Mail Server/Users/" + email + "/Info.txt");
@@ -244,6 +245,7 @@ public class MyApp implements IApp {
 	 */
 	@Override
 	public void moveEmails(final ILinkedList mails, final IFolder des) {
+		// TODO Auto-generated method stub
 		MyFolder desfolder = (MyFolder) des;
 		while (!mails.isEmpty()) {
 			MyFolder moved = new MyFolder();
@@ -269,6 +271,6 @@ public class MyApp implements IApp {
 	}
 
 	public static void main(String[] args) {
-
+		new SignInForm();
 	}
 }
