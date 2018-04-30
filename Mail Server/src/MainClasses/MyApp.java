@@ -266,7 +266,7 @@ public class MyApp implements IApp {
 	 */
 	@Override
 	public boolean compose(final IMail email) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

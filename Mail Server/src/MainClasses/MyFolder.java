@@ -1,6 +1,7 @@
 package MainClasses;
 
 import java.io.File;
+import java.io.IOException;
 
 import Interfaces.IFolder;
 
@@ -21,7 +22,7 @@ public class MyFolder implements IFolder {
 	 */
 	String name;
 
-	public void setFolder(File f) {
+	public void set(File f) {
 		f1 = f;
 		path = f.getPath();
 		name = f.getName();
@@ -33,11 +34,17 @@ public class MyFolder implements IFolder {
 	 * @param des
 	 * @param n
 	 */
-	public void create(String des, String n) {
+	public void createFolder(String des, String n) {
 		path = des;
 		name = n;
 		f1 = new File(des + "/" + n);
 		f1.mkdirs();
+	}
+	public void createFile(String des, String n) throws IOException {
+		path = des;
+		name = n;
+		f1 = new File(des + "/" + n);
+		f1.createNewFile();
 	}
 
 	/**
