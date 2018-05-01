@@ -214,7 +214,6 @@ public class MyApp implements IApp {
 	@Override
 	public void setViewingOptions(final IFolder folder, final IFilter filter,
 			final ISort sort) {
-		// TODO Auto-generated method stub
 	}
 
 	/**

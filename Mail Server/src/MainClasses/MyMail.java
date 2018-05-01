@@ -30,7 +30,7 @@ public class MyMail implements IMail {
 
 	public MyMail(String sender) {
 		Date now = new Date();
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y 'at' h:m:s a");
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y 'at' h-m-s a");
 		time = dateFormatter.format(now).toString(); 
 		from = sender;
 		/**
