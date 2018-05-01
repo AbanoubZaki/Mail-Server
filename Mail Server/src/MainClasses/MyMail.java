@@ -1,6 +1,9 @@
 package MainClasses;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import DataStructures.DoubleLinkedList;
 import DataStructures.LinkedBasedQueue;
@@ -8,17 +11,41 @@ import Interfaces.IMail;
 
 public class MyMail implements IMail {
 	int priority;
-	String from;
-	String subject;
-	MyFolder message;
-	String time;
-	DoubleLinkedList attachments;
-	LinkedBasedQueue receivers;
+	/**
+	 * must be an email in the form of 'bebo@aka.com'.
+	 */
+	String from = new String();
+	String subject = new String();
+	MyFolder message = new MyFolder();
+	String time = new String();
+	DoubleLinkedList attachments = new DoubleLinkedList();
+	/**
+	 * emails of the receivers.
+	 */
+	LinkedBasedQueue receivers = new LinkedBasedQueue();
+	/**
+	 * a folder that concatinates all components of the messg.
+	 */
 	MyFolder totalMsg = new MyFolder();
-	public MyMail() {
-		String des = "../Mail Server/Users/" + from + "/Sent Mails";
-		totalMsg.createFolder(des, time);
+
+	public MyMail(String sender) {
+		Date now = new Date();
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y 'at' h:m:s a");
+		time = dateFormatter.format(now).toString(); 
+		from = sender;
+		/**
+		 *  find the directory of the email of the user the get all his usernames
+		 */
+		File user = new File("../Mail Server/Users/" + from);
+		File[] listOfFiles = user.listFiles();
+		for (File file : listOfFiles) {
+			String des = "../Mail Server/Users/" + from + "/" + file.getName()
+					+ "/Sent Mails";
+			totalMsg.createFolder(des, time);
+			priority = 3;
+		}
 	}
+
 	public void setPriority(int p) {
 		priority = p;
 	}
@@ -36,14 +63,21 @@ public class MyMail implements IMail {
 	}
 
 	public void setReceivers(LinkedBasedQueue receiver) throws IOException {
-		String des = "../Mail Server/Users/" + from + "/Sent Mails";
-		receivers.equals(receiver);
-		MyFolder txt = new MyFolder();
-		txt.createFile(des, totalMsg.name + ".txt");
+		File user = new File("../Mail Server/Users/" + from);
+		File[] listOfFiles = user.listFiles();
+		for (File file : listOfFiles) {
+			String des = "../Mail Server/Users/" + from + "/" + file.getName()
+					+ "/Sent Mails";
+			MyFolder txt = new MyFolder();
+			txt.createFile(des, time + ".txt");
+		}
+		while (!receiver.isEmpty()) {
+			receivers.enqueue(receiver.dequeue());
+		}
 	}
 
 	public void setMessage(MyFolder msg) throws IOException {
 		message.equals(msg);
 		message.createFile(totalMsg.path, subject + ".txt");
- 	}
+	}
 }

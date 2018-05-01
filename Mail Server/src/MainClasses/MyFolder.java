@@ -38,7 +38,7 @@ public class MyFolder implements IFolder {
 		path = des;
 		name = n;
 		f1 = new File(des + "/" + n);
-		f1.mkdirs();
+		System.out.println(f1.mkdirs());
 	}
 	public void createFile(String des, String n) throws IOException {
 		path = des;

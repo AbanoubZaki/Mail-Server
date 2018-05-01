@@ -94,8 +94,8 @@ public class MyApp implements IApp {
 			e.printStackTrace();
 		}
 
-		SingleLinkedList usernames = new SingleLinkedList();
-		String user = new String();
+		SingleLinkedList emails = new SingleLinkedList();
+		String email = new String();
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(
@@ -105,8 +105,8 @@ public class MyApp implements IApp {
 			e.printStackTrace();
 		}
 		try {
-			while ((user = in.readLine()) != null) {
-				usernames.add(user);
+			while ((email = in.readLine()) != null) {
+				emails.add(email);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -119,24 +119,28 @@ public class MyApp implements IApp {
 			e.printStackTrace();
 		}
 		MyContact mycontact = (MyContact) (contact);
-		if (usernames.contains(mycontact.username)
-				|| mycontact.username.equals(null)
-				|| mycontact.pass.equals(null)) {
+		if (emails.contains(mycontact.email) || mycontact.username.equals(null)
+				|| mycontact.pass.equals(null)
+				|| mycontact.email.equals(null)) {
 			return false;
 		}
-		File f2 = new File("../Mail Server/Users/" + mycontact.username);
-		File f3 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Sent Mails");
-		File f6 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Drafts");
-		File f7 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Trash");
-		File f4 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Inbox");
-		File f5 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Starred");
-		File f22 = new File(
-				"../Mail Server/Users/" + mycontact.username + "/Info.txt");
+		File f2 = new File("../Mail Server/Users/" + mycontact.email);
+		File f8 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username);
+		File f3 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Sent Mails");
+		File f6 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Drafts");
+		File f7 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Trash");
+		File f9 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Contacts");
+		File f4 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Inbox");
+		File f5 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Starred");
+		File f22 = new File("../Mail Server/Users/" + mycontact.email + "/"
+				+ mycontact.username + "/Info.txt");
 
 		f2.mkdirs();
 		f3.mkdirs();
@@ -144,6 +148,8 @@ public class MyApp implements IApp {
 		f5.mkdirs();
 		f6.mkdirs();
 		f7.mkdirs();
+		f8.mkdirs();
+		f9.mkdirs();
 
 		try {
 			f22.createNewFile();
@@ -161,7 +167,7 @@ public class MyApp implements IApp {
 				e.printStackTrace();
 			}
 			PrintWriter pw1 = new PrintWriter(fw1);
-			pw1.append(mycontact.username);
+			pw1.append(mycontact.email);
 			pw1.println();
 			pw1.close();
 		} else {
@@ -173,20 +179,21 @@ public class MyApp implements IApp {
 				e.printStackTrace();
 			}
 			PrintWriter pw1 = new PrintWriter(fw1);
-			pw1.println(mycontact.username);
+			pw1.println(mycontact.email);
 			pw1.close();
 		}
 
 		FileWriter fw2 = null;
 		try {
-			fw2 = new FileWriter(
-					"../Mail Server/Users/" + mycontact.username + "/Info.txt");
+			fw2 = new FileWriter("../Mail Server/Users/" + mycontact.email + "/"
+					+ mycontact.username + "/Info.txt");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		PrintWriter pw2 = new PrintWriter(fw2);
 		pw2.println(mycontact.username);
+		pw2.println(mycontact.email);
 		pw2.println(mycontact.pass);
 		pw2.close();
 		return true;
@@ -232,7 +239,16 @@ public class MyApp implements IApp {
 	@Override
 	public void deleteEmails(final ILinkedList mails) {
 		// TODO Auto-generated method stub
-
+		MyFolder moved = new MyFolder();
+		moved.set((File) (mails.get(0)));
+		File f1 = moved.f1.getParentFile();
+		f1 = f1.getParentFile();
+		String trashDes = f1.getPath().toString() + "/Trash";
+		while (!mails.isEmpty()) {
+			moved.set((File) (mails.get(0)));
+			moved.move(trashDes);
+			mails.remove(0);
+		}
 	}
 
 	/**
@@ -249,7 +265,7 @@ public class MyApp implements IApp {
 		MyFolder desfolder = (MyFolder) des;
 		while (!mails.isEmpty()) {
 			MyFolder moved = new MyFolder();
-			moved.f1 = (File) (mails.get(0));
+			moved.set((File) (mails.get(0)));
 			moved.move(desfolder.path);
 			mails.remove(0);
 		}
@@ -266,8 +282,14 @@ public class MyApp implements IApp {
 	 */
 	@Override
 	public boolean compose(final IMail email) {
+		MyMail mail = new MyMail(((MyMail)(email)).from);
+		mail.equals((MyMail) email);
+		if (mail.from == null || mail.subject == null
+				|| mail.receivers.size() == 0 || mail.receivers == null) {
+			return false;
+		}
 		
-		return false;
+		return true;
 	}
 
 	public static void main(String[] args) {
