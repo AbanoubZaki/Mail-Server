@@ -37,7 +37,7 @@ public class Inbox {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		String[] s = new File(path + "/Inbox").list();
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		JList list = new JList(s);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setValueIsAdjusting(true);

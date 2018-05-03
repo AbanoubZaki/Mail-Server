@@ -20,7 +20,7 @@ public class SignInErrorMessage {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignInErrorMessage window = new SignInErrorMessage();
+					SignInErrorMessage window = new SignInErrorMessage("  ");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,17 +32,17 @@ public class SignInErrorMessage {
 	/**
 	 * Create the application.
 	 */
-	public SignInErrorMessage() {
-		initialize();
+	public SignInErrorMessage(String iconPath) {
+		initialize(iconPath);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		JFrame frame = new JFrame("Cannot Find Contact!!");
+	private void initialize(String iconPath) {
+		JFrame frame = new JFrame("Error!!");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		final ImageIcon icon = new ImageIcon("../Mail Server/SignInError.jpeg");
+		final ImageIcon icon = new ImageIcon(iconPath);
 		frame.getContentPane().setLayout(null);
 		JButton btn = new JButton(icon);
 		btn.addActionListener(new ActionListener() {
