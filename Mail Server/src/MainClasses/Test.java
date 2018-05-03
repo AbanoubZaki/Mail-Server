@@ -10,6 +10,7 @@ public class Test {
 
 	public MyContact contact = new MyContact("bebo", "bebo@aka.com", "123");
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException {
 		MyApp server = new MyApp();
 		Test test = new Test();
@@ -36,21 +37,11 @@ public class Test {
 		/**
 		 * test composing a mail.
 		 */
-
-		MyMail mail = new MyMail("bebo@aka.com");
 		LinkedBasedQueue to = new LinkedBasedQueue();
 		to.enqueue("amr@aka.com");
-		mail.setReceivers(to);
-		mail.setSubject("HI");
-		server.compose(mail);
-
-		/**
-		 * test making a new folder.
-		 */
-		/*
-		 * String path = "../Mail Server/Users/" + "bebo@aka.com" + "/" + "bebo"
-		 * + "/Sent Mails"; MyFolder fold = new MyFolder();
-		 * fold.createFolder(path, "done");
-		 */
+		to.enqueue("kiro@aka.com");
+		MyMail mail = new MyMail("bebo@aka.com", to, "Hi", "nice team", null);
+		
+		
 	}
 }

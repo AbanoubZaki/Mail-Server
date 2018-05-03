@@ -281,13 +281,21 @@ public class MyApp implements IApp {
 	 */
 	@Override
 	public boolean compose(final IMail email) {
-		MyMail mail = new MyMail(((MyMail)(email)).from);
+		MyMail mail = null;
+		try {
+			mail = new MyMail(((MyMail) (email)).from,
+					((MyMail) (email)).receivers, ((MyMail) (email)).subject,
+					((MyMail)(email)).message, ((MyMail)(email)).attachments);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mail.equals((MyMail) email);
 		if (mail.from == null || mail.subject == null
 				|| mail.receivers.size() == 0 || mail.receivers == null) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
