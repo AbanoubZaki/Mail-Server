@@ -16,7 +16,7 @@ import MainClasses.MyApp;
 public class SignInForm extends Frame {
 	public SignInForm() {
 		JFrame f = new JFrame("Mail Server");
-		JLabel l1 = new JLabel("Email :");
+		JLabel l1 = new JLabel("User Name :");
 		l1.setBounds(10, 10, 80, 10);
 		JLabel l2 = new JLabel("Password :");
 		l2.setBounds(10, 40, 80, 10);
@@ -53,15 +53,13 @@ public class SignInForm extends Frame {
 					f.dispose();
 					new SignInErrorMessage("../Mail Server/SignInError.jpeg");
 				}
-
 			}
 		});
 		signUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				f.dispose();
-				 new SignUpForm();
+				new SignUpForm();
 			}
 		});
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
