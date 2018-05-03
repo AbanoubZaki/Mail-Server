@@ -14,10 +14,13 @@ public class Test {
 	public static void main(String[] args) throws IOException {
 		MyApp server = new MyApp();
 		Test test = new Test();
+		
 		/**
-		 * test signing up ... moving mails... deleteing mails to trash.
+		 * test signing in & up ... moving mails... deleteing mails to trash.
 		 */
-		// server.signup(test.contact);
+		
+		//server.signup(test.contact);
+		System.out.println(server.signin("bebo@aka.com", "123"));
 		SingleLinkedList mails = new SingleLinkedList();
 		int i = 1;
 		while (i < 8) {
@@ -40,7 +43,7 @@ public class Test {
 		LinkedBasedQueue to = new LinkedBasedQueue();
 		to.enqueue("amr@aka.com");
 		to.enqueue("kiro@aka.com");
-		MyMail mail = new MyMail("bebo@aka.com", to, "Hi", "nice team", null);
+		MyMail mail2 = new MyMail("bebo@aka.com", to, "Hi", "nice team", null);
 		
 		
 	}

@@ -39,7 +39,8 @@ public class MyApp implements IApp {
 		File f1 = new File("../Mail Server/Users/" + email);
 		if (f1.exists()) {
 			File f2 = new File("../Mail Server/Users/" + email + "/Info.txt");
-			String read = new String();
+			String Email = new String();
+			String Pass = new String();
 			BufferedReader in = null;
 			try {
 				in = new BufferedReader(new FileReader(f2));
@@ -47,14 +48,11 @@ public class MyApp implements IApp {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			try {
-				read = in.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				read = in.readLine();
+				Email = in.readLine();
+				Email = in.readLine();
+				Pass = in.readLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,7 +63,7 @@ public class MyApp implements IApp {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (read.equals(password)) {
+			if (Email.equals(email) && Pass.equals(password)) {
 				return true;
 			}
 		}
@@ -125,22 +123,13 @@ public class MyApp implements IApp {
 			return false;
 		}
 		File f2 = new File("../Mail Server/Users/" + mycontact.email);
-		File f8 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username);
-		File f3 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Sent Mails");
-		File f6 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Drafts");
-		File f7 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Trash");
-		File f9 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Contacts");
-		File f4 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Inbox");
-		File f5 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Starred");
-		File f22 = new File("../Mail Server/Users/" + mycontact.email + "/"
-				+ mycontact.username + "/Info.txt");
+		File f3 = new File("../Mail Server/Users/" + mycontact.email + "/Sent Mails");
+		File f6 = new File("../Mail Server/Users/" + mycontact.email + "/Drafts");
+		File f7 = new File("../Mail Server/Users/" + mycontact.email + "/Trash");
+		File f9 = new File("../Mail Server/Users/" + mycontact.email + "/Contacts");
+		File f4 = new File("../Mail Server/Users/" + mycontact.email + "/Inbox");
+		File f5 = new File("../Mail Server/Users/" + mycontact.email + "/Starred");
+		File f22 = new File("../Mail Server/Users/" + mycontact.email + "/Info.txt");
 
 		f2.mkdirs();
 		f3.mkdirs();
@@ -148,7 +137,6 @@ public class MyApp implements IApp {
 		f5.mkdirs();
 		f6.mkdirs();
 		f7.mkdirs();
-		f8.mkdirs();
 		f9.mkdirs();
 
 		try {
@@ -185,8 +173,7 @@ public class MyApp implements IApp {
 
 		FileWriter fw2 = null;
 		try {
-			fw2 = new FileWriter("../Mail Server/Users/" + mycontact.email + "/"
-					+ mycontact.username + "/Info.txt");
+			fw2 = new FileWriter("../Mail Server/Users/" + mycontact.email + "/Info.txt");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,7 +282,6 @@ public class MyApp implements IApp {
 				|| mail.receivers.size() == 0 || mail.receivers == null) {
 			return false;
 		}
-
 		return true;
 	}
 
