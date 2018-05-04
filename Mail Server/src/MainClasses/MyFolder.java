@@ -68,7 +68,7 @@ public class MyFolder implements IFolder {
 	}
 
 	/**
-	 * when user chosses to delete some items they are actually moved to the
+	 * when user chooses to delete some items they are actually moved to the
 	 * trash folder.
 	 * 
 	 * @throws IOException
@@ -78,7 +78,7 @@ public class MyFolder implements IFolder {
 		File folder = f1.getParentFile();
 		File email = folder.getParentFile();
 		/**
-		 * read the txt messg inside the email folder.
+		 * read the txt message inside the email folder.
 		 */
 		BufferedReader in = null;
 		in = new BufferedReader(new FileReader(msgtxt));
@@ -98,7 +98,7 @@ public class MyFolder implements IFolder {
 		date = dateFormatter.format(now).toString();
 		msg.add(0, date);
 		/**
-		 * write the new date with all the previous contents of the messg.
+		 * write the new date with all the previous contents of the message.
 		 */
 		FileWriter fw1 = null;
 		try {
