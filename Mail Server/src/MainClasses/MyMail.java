@@ -33,11 +33,9 @@ public class MyMail implements IMail {
 	public MyMail(String sender, LinkedBasedQueue receiver, String sub,
 			String msg, DoubleLinkedList attach) throws IOException {
 		Date now = new Date();
-		SimpleDateFormat dateFormatter = new SimpleDateFormat(
-				"d-M-y 'at' h-m-s a");
-		date = dateFormatter.format(now).toString();
+		SimpleDateFormat dateFormatter = new SimpleDateFormat();
 		dateFormatter = new SimpleDateFormat("d-M-y");
-		time = dateFormatter.format(now).toString();
+		date = dateFormatter.format(now).toString();
 		from = sender;
 		setReceivers(receiver);
 		priority = 3;
@@ -52,16 +50,18 @@ public class MyMail implements IMail {
 		while (k < receivers.size()) {
 			String des = "../Mail Server/Users/" + from + "/" + "/Sent Mails";
 			SimpleDateFormat dateFormatter1 = new SimpleDateFormat(
-					"d-M-y 'at' h-m-s a");
-			date = dateFormatter1.format(now).toString();
+					"h-m-s a");
+			time = dateFormatter1.format(now).toString();
 			String to = (String) receivers.dequeue();
 			receivers.enqueue(to);
-			totalMsg.createFolder(des, to + " " + date);
-			totalMsg.createFile(des + "/" + to + " " + date, "/Message.txt");
+			totalMsg.createFolder(des, to + " " + time);
+			totalMsg.createFile(des + "/" + to + " " + time, "/Message.txt");
 			FileWriter fw1 = null;
-			fw1 = new FileWriter(des + "/" + to + " " + date + "/Message.txt");
+			fw1 = new FileWriter(des + "/" + to + " " + time + "/Message.txt");
 			PrintWriter pw1 = new PrintWriter(fw1);
+			
 			pw1.println(date);
+			pw1.println(time);
 			pw1.println(from);
 			pw1.println(to);
 			pw1.println(subject);
