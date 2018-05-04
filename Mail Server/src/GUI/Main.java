@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 
 public class Main {
 
-	private JFrame frmYourProfile;
+	private JFrame frmProfile;
 
 	/**
 	 * Launch the application.
@@ -23,7 +23,7 @@ public class Main {
 			public void run() {
 				try {
 					Main window = new Main("                 ");
-					window.frmYourProfile.setVisible(true);
+					window.frmProfile.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,16 +42,16 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String path) {
-		frmYourProfile = new JFrame();
-		frmYourProfile.setResizable(false);
-		frmYourProfile.setTitle("Your Profile");
-		frmYourProfile.setBounds(10, 10, 304, 219);
-		frmYourProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmProfile = new JFrame();
+		frmProfile.setResizable(false);
+		frmProfile.setTitle("Profile");
+		frmProfile.setBounds(10, 10, 304, 219);
+		frmProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
-		frmYourProfile.getContentPane().add(panel, BorderLayout.CENTER);
+		frmProfile.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
-		frmYourProfile.setVisible(true);
-		frmYourProfile.setLocationRelativeTo(null);
+		frmProfile.setVisible(true);
+		frmProfile.setLocationRelativeTo(null);
 		JButton btnDrafts = new JButton("Drafts");
 		btnDrafts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -60,9 +60,9 @@ public class Main {
 		btnDrafts.setBounds(16, 100, 117, 29);
 		panel.add(btnDrafts);
 
-		JLabel lblWelcome = new JLabel("Welcome To Our Mail");
+		JLabel lblWelcome = new JLabel("Welcome To Our Mail Server");
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcome.setBounds(81, 6, 132, 16);
+		lblWelcome.setBounds(57, 5, 182, 16);
 		panel.add(lblWelcome);
 
 		JButton btnInbox = new JButton("Inbox");

@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -64,23 +66,29 @@ public class MyFolder implements IFolder {
 		path = des;
 		String name = f1.getName();
 		File f2 = new File(des + "/" + name);
-		f1.renameTo(f2);
+//		f1.renameTo(f2); not effective .
+		try {
+			Files.move(f1.toPath(), f2.toPath(), StandardCopyOption.ATOMIC_MOVE);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
-	 * when user chosses to delete some items they are actually moved to the
+	 * when user chooses to delete some items they are actually moved to the
 	 * trash folder.
 	 * 
 	 * @throws IOException
 	 */
 	public void delTrash() throws IOException {
-		File f = new File(f1.getPath() + "/Message.txt");
-		File f2 = f1.getParentFile();
-		File f3 = f2.getParentFile();
-		String Email = f3.getName();
+		File message = new File(f1.getPath() + "/Message.txt");// message
+		File inbox = f1.getParentFile();// inbox
+		File f3 = inbox.getParentFile();// user
+		String Email = f3.getName();// user as a string
 
 		BufferedReader in = null;
-		in = new BufferedReader(new FileReader(f));
+		in = new BufferedReader(new FileReader(message));
 		DoubleLinkedList msg = new DoubleLinkedList();
 		String temp = new String();
 		while ((temp = in.readLine()) != null) {
@@ -109,7 +117,8 @@ public class MyFolder implements IFolder {
 		File f4 = new File(f3.getPath() + "/Trash/" + name);
 		System.out.println(f4.getPath());
 		f1.renameTo(f4);
-
+		pw1.close();
+		fw1.close();
 	}
 
 	/**
