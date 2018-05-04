@@ -11,6 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import MainClasses.MyApp;
+
+import java.awt.Color;
+
 public class Main {
 
 	private JFrame frmProfile;
@@ -45,7 +49,7 @@ public class Main {
 		frmProfile = new JFrame();
 		frmProfile.setResizable(false);
 		frmProfile.setTitle("Profile");
-		frmProfile.setBounds(10, 10, 304, 219);
+		frmProfile.setBounds(10, 10, 304, 240);
 		frmProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
 		frmProfile.getContentPane().add(panel, BorderLayout.CENTER);
@@ -57,7 +61,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDrafts.setBounds(16, 100, 117, 29);
+		btnDrafts.setBounds(16, 153, 117, 29);
 		panel.add(btnDrafts);
 
 		JLabel lblWelcome = new JLabel("Welcome To Our Mail Server");
@@ -68,22 +72,23 @@ public class Main {
 		JButton btnInbox = new JButton("Inbox");
 		btnInbox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frmProfile.dispose();
 				new Inbox(path);
 			}
 		});
-		btnInbox.setBounds(16, 60, 117, 29);
+		btnInbox.setBounds(16, 123, 117, 29);
 		panel.add(btnInbox);
 
 		JButton btnSentMails = new JButton("Sent Mails");
-		btnSentMails.setBounds(162, 60, 117, 29);
+		btnSentMails.setBounds(162, 123, 117, 29);
 		panel.add(btnSentMails);
 
 		JButton btnStarred = new JButton("Starred");
-		btnStarred.setBounds(16, 140, 117, 29);
+		btnStarred.setBounds(16, 183, 117, 29);
 		panel.add(btnStarred);
 
 		JButton btnTrash = new JButton("Trash");
-		btnTrash.setBounds(162, 140, 117, 29);
+		btnTrash.setBounds(162, 183, 117, 29);
 		panel.add(btnTrash);
 
 		JLabel lblNewLabel = new JLabel(path.substring(21, path.length() - 1));
@@ -92,7 +97,18 @@ public class Main {
 		panel.add(lblNewLabel);
 		
 		JButton btnContacts = new JButton("Contacts");
-		btnContacts.setBounds(162, 100, 117, 29);
+		btnContacts.setBounds(162, 153, 117, 29);
 		panel.add(btnContacts);
+		
+		JButton btnNewButton = new JButton("Compose");
+		btnNewButton.setBackground(new Color(0, 255, 0));
+		btnNewButton.setForeground(new Color(128, 0, 0));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnNewButton.setBounds(27, 82, 252, 29);
+		panel.add(btnNewButton);
 	}
 }
