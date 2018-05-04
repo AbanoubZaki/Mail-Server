@@ -43,6 +43,7 @@ public class Test {
 		MyMail mail2 = new MyMail("bebo@aka.com", to, "Hi", "nice team", null);
 		
 		
+		
 		/**
 		 * trashing
 		 */

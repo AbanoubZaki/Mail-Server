@@ -22,8 +22,8 @@ public class MySort implements ISort {
 		DoubleLinkedList mails = new DoubleLinkedList();
 		mails = myfolder.listFilesForFolder();
 		MyPriorityQueue q = new MyPriorityQueue();
-		int priority = new Integer(3);
 		while (!mails.isEmpty()) {
+			int priority = new Integer(3);
 			File mail = new File(directory.getPath() + "/" + mails.get(0));
 			File txt = new File(directory.getPath() + "/" + mails.get(0) + "/"
 					+ "Message.txt");
