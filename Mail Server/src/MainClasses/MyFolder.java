@@ -77,7 +77,6 @@ public class MyFolder implements IFolder {
 		File f = new File(f1.getPath() + "/Message.txt");
 		File f2 = f1.getParentFile();
 		File f3 = f2.getParentFile();
-		String Email = f3.getName();
 
 		BufferedReader in = null;
 		in = new BufferedReader(new FileReader(f));
@@ -93,23 +92,24 @@ public class MyFolder implements IFolder {
 		dateFormatter = new SimpleDateFormat("d-M-y");
 		date = dateFormatter.format(now).toString();
 		msg.add(0, date);
+				
 		FileWriter fw1 = null;
 		try {
-			fw1 = new FileWriter(f1.getPath() + "/Message.txt", true);
+			fw1 = new FileWriter(f.getPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		PrintWriter pw1 = new PrintWriter(fw1);
 		while (!msg.isEmpty()) {
-			pw1.append((String) msg.get(0));
+			pw1.println((String) msg.get(0));
 			msg.remove(0);
 		}
-
+		pw1.close();
+		
 		File f4 = new File(f3.getPath() + "/Trash/" + name);
 		System.out.println(f4.getPath());
 		f1.renameTo(f4);
-
 	}
 
 	/**
