@@ -123,17 +123,15 @@ public class MyFolder implements IFolder {
 	/**
 	 * used to delete the mail permanently from the user's account.
 	 */
-	public boolean delPermanent(File dir) {
+	public void delPermanent(File dir) {
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
-				boolean success = delPermanent(new File(dir, children[i]));
-				if (!success) {
-					return false;
-				}
+				delPermanent(new File(dir, children[i]));
 			}
 		}
-		return dir.delete();
+		dir.delete();
+		return;
 	}
 	
 	/**

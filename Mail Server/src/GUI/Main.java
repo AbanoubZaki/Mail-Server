@@ -4,6 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,7 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import DataStructures.DoubleLinkedList;
 import MainClasses.MyApp;
+import MainClasses.MyFolder;
 
 import java.awt.Color;
 
@@ -46,6 +58,7 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String path) {
+		checkTrash(path);
 		frmProfile = new JFrame();
 		frmProfile.setResizable(false);
 		frmProfile.setTitle("Profile");
@@ -95,20 +108,76 @@ public class Main {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(16, 33, 263, 16);
 		panel.add(lblNewLabel);
-		
+
 		JButton btnContacts = new JButton("Contacts");
 		btnContacts.setBounds(162, 153, 117, 29);
 		panel.add(btnContacts);
-		
+
 		JButton btnNewButton = new JButton("Compose");
 		btnNewButton.setBackground(new Color(0, 255, 0));
 		btnNewButton.setForeground(new Color(128, 0, 0));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		btnNewButton.setBounds(27, 82, 252, 29);
 		panel.add(btnNewButton);
+	}
+
+	void checkTrash(String path) {
+		/**
+		 * deleting the 30 passed trashed emails.
+		 */
+		File trash = new File(path + "Trash");
+		MyFolder getFolders = new MyFolder();
+		getFolders.set(trash);
+		DoubleLinkedList names = new DoubleLinkedList();
+		names = getFolders.listFilesForFolder();
+		while (!names.isEmpty()) {
+			File msg = new File(trash.getPath() + "/" + (String) names.get(0)
+					+ "/" + "Message.txt");
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new FileReader(msg));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String date1 = new String();
+			String date2 = new String();
+			try {
+				date1 = in.readLine();
+				names.remove(0);
+				Date now = new Date();
+				SimpleDateFormat dateFormatter = new SimpleDateFormat("d-M-y");
+				date2 = dateFormatter.format(now).toString();
+				SimpleDateFormat sdf = new SimpleDateFormat("d-M-y",
+						Locale.ENGLISH);
+				Date firstDate = sdf.parse(date2);
+				Date secondDate = sdf.parse(date1);
+
+				long diffInMillies = Math
+						.abs(secondDate.getTime() - firstDate.getTime());
+				long diff = TimeUnit.DAYS.convert(diffInMillies,
+						TimeUnit.MILLISECONDS);
+				System.out.println(diff);
+				if (diff >= 30) {
+					File mail = new File(msg.getParent());
+					MyFolder del = new MyFolder();
+					del.delPermanent(mail);
+				}
+
+			} catch (IOException | ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

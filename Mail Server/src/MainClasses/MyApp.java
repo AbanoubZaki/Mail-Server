@@ -7,13 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import DataStructures.DoubleLinkedList;
 import DataStructures.SingleLinkedList;
 import GUI.SignInForm;
 import Interfaces.IApp;
@@ -70,57 +63,6 @@ public class MyApp implements IApp {
 				e.printStackTrace();
 			}
 			if (Email.equals(email) && Pass.equals(password)) {
-				/**
-				 * deleting the 30 passed trashed emails.
-				 */
-				File trash = new File(
-						"../Mail Server/Users/" + email + "/Trash");
-				MyFolder getFolders = new MyFolder();
-				getFolders.set(trash);
-				DoubleLinkedList names = new DoubleLinkedList();
-				names = getFolders.listFilesForFolder();
-				while (!names.isEmpty()) {
-					File msg = new File(trash.getPath() + "/"+(String) names.get(0)+"/"+"Message.txt");
-					
-					try {
-						in = new BufferedReader(new FileReader(msg));
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					String date1 = new String();
-					String date2 = new String();
-					try {
-						date1 = in.readLine();
-						names.remove(0);
-						Date now = new Date();
-						SimpleDateFormat dateFormatter = new SimpleDateFormat();
-						dateFormatter = new SimpleDateFormat("d-M-y");
-						date2 = dateFormatter.format(now).toString();
-						SimpleDateFormat sdf = new SimpleDateFormat("d-M-y", Locale.ENGLISH);
-					    Date firstDate = sdf.parse(date2);
-					    Date secondDate = sdf.parse(date1);
-					 
-					    long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
-					    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-						System.out.println(diff);
-						if (diff >= 30) {
-							File mail = new File(msg.getParent());
-							MyFolder del = new MyFolder();
-							del.delPermanent(mail);
-						}
-						
-					} catch (IOException | ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					try {
-						in.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 				return true;
 			}
 		}
