@@ -52,6 +52,7 @@ public class Test {
 		
 		
 		File f4 = new File("../Mail Server/Users/bebo@aka.com/Trash/New folder");
+		
 		MyFolder del = new MyFolder();
 //		del.delPermanent(f4);
 		server.signin("bebo@aka.com", "123");
