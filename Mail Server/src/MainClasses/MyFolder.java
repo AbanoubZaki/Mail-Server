@@ -74,28 +74,35 @@ public class MyFolder implements IFolder {
 	 * @throws IOException
 	 */
 	public void delTrash() throws IOException {
-		File f = new File(f1.getPath() + "/Message.txt");
-		File f2 = f1.getParentFile();
-		File f3 = f2.getParentFile();
-
+		File msgtxt = new File(f1.getPath() + "/Message.txt");
+		File folder = f1.getParentFile();
+		File email = folder.getParentFile();
+		/**
+		 * read the txt messg inside the email folder.
+		 */
 		BufferedReader in = null;
-		in = new BufferedReader(new FileReader(f));
+		in = new BufferedReader(new FileReader(msgtxt));
 		DoubleLinkedList msg = new DoubleLinkedList();
 		String temp = new String();
 		while ((temp = in.readLine()) != null) {
 			msg.add(temp);
 		}
 		in.close();
+		/**
+		 * set the date of sending the email to trash.
+		 */
 		Date now = new Date();
 		String date = new String();
 		SimpleDateFormat dateFormatter = new SimpleDateFormat();
 		dateFormatter = new SimpleDateFormat("d-M-y");
 		date = dateFormatter.format(now).toString();
 		msg.add(0, date);
-				
+		/**
+		 * write the new date with all the previous contents of the messg.
+		 */
 		FileWriter fw1 = null;
 		try {
-			fw1 = new FileWriter(f.getPath());
+			fw1 = new FileWriter(msgtxt.getPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,9 +113,10 @@ public class MyFolder implements IFolder {
 			msg.remove(0);
 		}
 		pw1.close();
-		
-		File f4 = new File(f3.getPath() + "/Trash/" + name);
-		System.out.println(f4.getPath());
+		/**
+		 * finally move the email to trash. 
+		 */
+		File f4 = new File(email.getPath() + "/Trash/" + name);
 		f1.renameTo(f4);
 	}
 
