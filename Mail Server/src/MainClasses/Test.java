@@ -32,6 +32,7 @@ public class Test {
 		f.set(f1);
 		server.deleteEmails(mails);*/
 
+		
 		/**
 		 * test composing a mail.
 		 */
@@ -41,12 +42,18 @@ public class Test {
 		MyMail mail2 = new MyMail("bebo@aka.com", to, "Hi", "nice team", null);*/
 		
 		
-		
-		
-		File f3 = new File("../Mail Server/Users/bebo@aka.com/Sent Mails/kiro@aka.com 12-58-53 AM");
+		/**
+		 * trashing
+		 */
+		/*File f3 = new File("../Mail Server/Users/bebo@aka.com/Sent Mails/kiro@aka.com 12-58-53 AM");
 		MyFolder del = new MyFolder();
 		del.set(f3);
-		del.delTrash();
+		del.delTrash();*/
 		
+		
+		File f4 = new File("../Mail Server/Users/bebo@aka.com/Trash/New folder");
+		MyFolder del = new MyFolder();
+//		del.delPermanent(f4);
+		server.signin("bebo@aka.com", "123");
 	}
 }
