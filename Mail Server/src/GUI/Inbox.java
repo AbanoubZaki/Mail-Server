@@ -154,7 +154,7 @@ public class Inbox {
 		moveBox.setSelectedIndex(0);
 		sortBox.setSelectedIndex(0);
 		filterBox.setSelectedIndex(0);
-		String[] s = new File(path + "/Inbox").list();
+		String[] s = new File(path + "Inbox").list();
 		dls = new DefaultListModel<String>();
 		for (int j = 0; j < s.length; j++) {
 			dls.addElement(s[j]);

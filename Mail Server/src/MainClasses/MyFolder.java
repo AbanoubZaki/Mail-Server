@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
  
@@ -54,6 +55,15 @@ public class MyFolder implements IFolder {
         f1 = new File(des + "/" + n);
         f1.createNewFile();
     }
+    
+    public void sendCopy(String des) {
+    	try {
+			Files.copy(f1.toPath(), new File(des + "/" +f1.getName()).toPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
  
     /**
      * moves a file into certain destination.
@@ -96,6 +106,7 @@ public class MyFolder implements IFolder {
         SimpleDateFormat dateFormatter = new SimpleDateFormat();
         dateFormatter = new SimpleDateFormat("d-M-y");
         date = dateFormatter.format(now).toString();
+        msg.add(0, folder.getName());
         msg.add(0, date);
         /**
          * write the new date with all the previous contents of the message.

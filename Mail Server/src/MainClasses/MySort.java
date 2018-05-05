@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import DataStructures.DoubleLinkedList;
-import DataStructures.MyPriorityQueue;
 import Interfaces.ISort;
 
 public class MySort implements ISort {
@@ -16,17 +15,16 @@ public class MySort implements ISort {
 	 * @param directory
 	 * @throws IOException
 	 */
-	public MyPriorityQueue sortPriority(File directory) throws IOException {
+	public void sortPriority(File directory) throws IOException {
 		MyFolder myfolder = new MyFolder();
 		myfolder.set(directory);
 		DoubleLinkedList mails = new DoubleLinkedList();
 		mails = myfolder.listFilesForFolder();
 		MyPriorityQueue q = new MyPriorityQueue();
+		int priority = new Integer(3);
 		while (!mails.isEmpty()) {
-			int priority = new Integer(3);
 			File mail = new File(directory.getPath() + "/" + mails.get(0));
-			File txt = new File(directory.getPath() + "/" + mails.get(0) + "/"
-					+ "Message.txt");
+			File txt = new File(directory.getPath() + "/" + mails.get(0) + "/Message.txt");
 			/**
 			 * read the mail folder (txt + attachments).
 			 */
@@ -51,7 +49,6 @@ public class MySort implements ISort {
 			}
 			q.insert(mail, priority);
 		}
-		return q;
 
 	}
 }

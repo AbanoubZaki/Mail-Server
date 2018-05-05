@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import DataStructures.DoubleLinkedList;
-import MainClasses.MyApp;
 import MainClasses.MyFolder;
 
 import java.awt.Color;
@@ -101,6 +100,11 @@ public class Main {
 		panel.add(btnStarred);
 
 		JButton btnTrash = new JButton("Trash");
+		btnTrash.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Trash(path);
+			}
+		});
 		btnTrash.setBounds(162, 183, 117, 29);
 		panel.add(btnTrash);
 
@@ -121,7 +125,7 @@ public class Main {
 
 			}
 		});
-		btnNewButton.setBounds(27, 82, 252, 29);
+		btnNewButton.setBounds(16, 82, 263, 29);
 		panel.add(btnNewButton);
 	}
 
