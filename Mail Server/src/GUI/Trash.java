@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.EventQueue;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,16 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.text.AbstractDocument.BranchElement;
-
 import DataStructures.DoubleLinkedList;
 import MainClasses.MyFolder;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -77,7 +72,8 @@ public class Trash {
 			public void actionPerformed(ActionEvent e) {
 				Scanner sc = null;
 				try {
-					sc = new Scanner(new FileReader(new File(path + "Trash/" + list.getSelectedValue() + "/message.txt")));
+					sc = new Scanner(new FileReader(new File(path + "Trash/"
+							+ list.getSelectedValue() + "/message.txt")));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -92,7 +88,8 @@ public class Trash {
 				sc.close();
 				PrintWriter pw = null;
 				try {
-					pw = new PrintWriter(new File(path + "Trash/" + list.getSelectedValue() + "/message.txt"));
+					pw = new PrintWriter(new File(path + "Trash/"
+							+ list.getSelectedValue() + "/message.txt"));
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -101,7 +98,8 @@ public class Trash {
 				pw.close();
 				FileWriter fw = null;
 				try {
-					fw =new FileWriter(new File(path + "Trash/" + list.getSelectedValue() + "/message.txt"), true);
+					fw = new FileWriter(new File(path + "Trash/"
+							+ list.getSelectedValue() + "/message.txt"), true);
 					pw = new PrintWriter(new BufferedWriter(fw));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
