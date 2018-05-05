@@ -16,7 +16,7 @@ public class MySort implements ISort {
 	 * @param directory
 	 * @throws IOException
 	 */
-	public void sortPriority(File directory) throws IOException {
+	public MyPriorityQueue sortPriority(File directory) throws IOException {
 		MyFolder myfolder = new MyFolder();
 		myfolder.set(directory);
 		DoubleLinkedList mails = new DoubleLinkedList();
@@ -51,6 +51,7 @@ public class MySort implements ISort {
 			}
 			q.insert(mail, priority);
 		}
+		return q;
 
 	}
 }
