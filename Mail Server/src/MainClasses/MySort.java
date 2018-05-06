@@ -75,6 +75,7 @@ public class MySort implements ISort {
 			/**
 			 * read the txt file.
 			 */
+			
 			BufferedReader in = null;
 			in = new BufferedReader(new FileReader(txt));
 			String date1 = new String("");
