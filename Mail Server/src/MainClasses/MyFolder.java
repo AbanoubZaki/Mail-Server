@@ -96,6 +96,7 @@ public class MyFolder implements IFolder {
         SimpleDateFormat dateFormatter = new SimpleDateFormat();
         dateFormatter = new SimpleDateFormat("d-M-y");
         date = dateFormatter.format(now).toString();
+        msg.add(0, folder.getPath());
         msg.add(0, date);
         /**
          * write the new date with all the previous contents of the message.

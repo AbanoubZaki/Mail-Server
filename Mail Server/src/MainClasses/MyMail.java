@@ -71,22 +71,6 @@ public class MyMail implements IMail {
 		}
 	}
 
-	public void setPriority(int p) {
-		priority = p;
-	}
-
-	public void setSender(String sender) {
-		from = sender;
-	}
-
-	public void setSubject(String sub) {
-		subject = sub;
-	}
-
-	public void setAttach(DoubleLinkedList attach) {
-		attachments.equals(attach);
-	}
-
 	/**
 	 * prints the name of recievers in txt file beside the folder containing the
 	 * mail.
@@ -98,9 +82,5 @@ public class MyMail implements IMail {
 		while (!receiver.isEmpty()) {
 			receivers.enqueue(receiver.dequeue());
 		}
-	}
-
-	public void setMessage(String msg) {
-		message = msg;
 	}
 }

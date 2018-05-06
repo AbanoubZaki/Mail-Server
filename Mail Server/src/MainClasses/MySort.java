@@ -2,8 +2,10 @@ package MainClasses;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import DataStructures.DoubleLinkedList;
 import DataStructures.MyPriorityQueue;
@@ -23,10 +25,11 @@ public class MySort implements ISort {
 		mails = myfolder.listFilesForFolder();
 		MyPriorityQueue q = new MyPriorityQueue();
 		while (!mails.isEmpty()) {
-			int priority = new Integer(3);
+			int priority = new Integer(4);
 			File mail = new File(directory.getPath() + "/" + mails.get(0));
 			File txt = new File(directory.getPath() + "/" + mails.get(0) + "/"
 					+ "Message.txt");
+			mails.remove(0);
 			/**
 			 * read the mail folder (txt + attachments).
 			 */
@@ -52,6 +55,37 @@ public class MySort implements ISort {
 			q.insert(mail, priority);
 		}
 		return q;
+	}
+
+	/**
+	 * sorts by date.
+	 * 
+	 * @param directory
+	 * @return
+	 * @throws IOException
+	 */
+	public DoubleLinkedList sortDate(File directory) throws IOException {
+		MyFolder myfolder = new MyFolder();
+		myfolder.set(directory);
+		DoubleLinkedList mails = new DoubleLinkedList();
+		mails = myfolder.listFilesForFolder();
+		DoubleLinkedList list = new DoubleLinkedList();
+		int i = 0;
+		while (i < mails.size - 1) {
+			File txt = new File(directory.getPath() + "/" + mails.get(i) + "/"
+					+ "Message.txt");
+			/**
+			 * read the txt file.
+			 */
+			BufferedReader in = null;
+			in = new BufferedReader(new FileReader(txt));
+			String date1 = new String("");
+			date1 += in.readLine();
+			date1 += in.readLine();
+			in.close();
+
+		}
+		return list;
 
 	}
 }
