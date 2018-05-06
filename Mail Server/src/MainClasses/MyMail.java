@@ -26,7 +26,7 @@ public class MyMail implements IMail {
 	 */
 	LinkedBasedQueue receivers = new LinkedBasedQueue();
 	/**
-	 * a folder that concatinates all components of the messg.
+	 * a folder that concatinates all components of the message.
 	 */
 	MyFolder totalMsg = new MyFolder();
 

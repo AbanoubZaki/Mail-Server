@@ -1,7 +1,5 @@
 package DataStructures;
 
-import DataStructures.DoubleLinkedList;
-import DataStructures.Node;
 import Interfaces.IPriorityQueue;
 /**
  * object carries value and key.
