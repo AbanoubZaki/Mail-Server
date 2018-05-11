@@ -270,7 +270,7 @@ public class DoubleLinkedList implements ILinkedList {
 		int i = 0;
 		temp = header.getNext();
 		if (size == 0 || o == null) {
-			throw new RuntimeException();
+			return false;
 		}
 		for (i = 0; i < size; i++) {
 			if (temp.getElement().equals(o)) {

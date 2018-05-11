@@ -7,8 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import DataStructures.DoubleLinkedList;
 import DataStructures.SingleLinkedList;
-import GUI.SignInForm;
 import Interfaces.IApp;
 import Interfaces.IContact;
 import Interfaces.IFilter;
@@ -34,6 +35,9 @@ public class MyApp implements IApp {
 	@Override
 	public boolean signin(final String eMail, final String password) {
 		// TODO Auto-generated method stub
+		if (eMail == null || password == null) {
+			return false;
+		}
 		String email = eMail.toLowerCase();
 		File f1 = new File("../Mail Server/Users/" + email);
 		if (f1.exists()) {
@@ -90,7 +94,10 @@ public class MyApp implements IApp {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		/**
+		 * checks if one of the contact fields are null. then. check if the user
+		 * is already found on server or not.
+		 */
 		SingleLinkedList emails = new SingleLinkedList();
 		String email = new String();
 		BufferedReader in = null;
@@ -124,18 +131,32 @@ public class MyApp implements IApp {
 		File f2 = new File("../Mail Server/Users/" + mycontact.email);
 		File f3 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Sent Mails");
+		File sentIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Sent Mails/Index.txt");
 		File f6 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Drafts");
+		File draftsIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Drafts/Index.txt");
 		File f7 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Trash");
+		File trashIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Trash/Index.txt");
 		File f9 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Contacts");
+		File contactsIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Contacts/Index.txt");
 		File f4 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Inbox");
+		File inboxIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Inbox/Index.txt");
 		File f5 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Starred");
+		File starredIn = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Starred/Index.txt");
 		File f22 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Info.txt");
+		File f23 = new File(
+				"../Mail Server/Users/" + mycontact.email + "/Index.txt");
 
 		f2.mkdirs();
 		f3.mkdirs();
@@ -147,11 +168,22 @@ public class MyApp implements IApp {
 
 		try {
 			f22.createNewFile();
+			f23.createNewFile();
+			sentIn.createNewFile();
+			draftsIn.createNewFile();
+			trashIn.createNewFile();
+			contactsIn.createNewFile();
+			inboxIn.createNewFile();
+			starredIn.createNewFile();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		/**
+		 * write user's email in index.txt file.
+		 */
 		if (f2.exists()) {
 			FileWriter fw1 = null;
 			try {
@@ -169,14 +201,16 @@ public class MyApp implements IApp {
 			try {
 				fw1 = new FileWriter("../Mail Server/Users/Index.txt");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			PrintWriter pw1 = new PrintWriter(fw1);
 			pw1.println(mycontact.email);
 			pw1.close();
 		}
-
+		
+		/**
+		 * write user's information in info.txt file.
+		 */
 		FileWriter fw2 = null;
 		try {
 			fw2 = new FileWriter(
@@ -190,6 +224,26 @@ public class MyApp implements IApp {
 		pw2.println(mycontact.email);
 		pw2.println(mycontact.pass);
 		pw2.close();
+		
+		/**
+		 * write user's information in info.txt file.
+		 */
+		FileWriter fw3 = null;
+		try {
+			fw3 = new FileWriter("../Mail Server/Users/" + mycontact.email + "/Index.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter pw3 = new PrintWriter(fw3);
+		pw3.println("Contacts");
+		pw3.println("Drafts");
+		pw3.println("Inbox");
+		pw3.println("Trash");
+		pw3.println("Sent Mails");
+		pw3.println("Starred");
+		pw3.close();
+		
 		return true;
 
 	}
@@ -198,28 +252,26 @@ public class MyApp implements IApp {
 	 * This function should be called before reading from the index file and
 	 * apply the sort and search parameters.
 	 * 
-	 * @param folder
-	 *            currently shown, can be null.
-	 * @param filter
-	 *            to apply search, can be null.
-	 * @param sort
-	 *            to apply sort.
+	 * @param folder currently shown, can be null.
+	 * @param filter to apply search, can be null.
+	 * @param sort to apply sort.
 	 */
 	@Override
 	public void setViewingOptions(final IFolder folder, final IFilter filter,
 			final ISort sort) {
+		
 	}
 
 	/**
 	 * You should use setViewingOptions function first.
 	 * 
-	 * @param page
-	 *            to handle paging.
+	 * @param page to handle paging.
 	 * @return list of emails.
 	 */
 	@Override
 	public IMail[] listEmails(final int page) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -237,9 +289,14 @@ public class MyApp implements IApp {
 		File f1 = moved.f1.getParentFile();
 		f1 = f1.getParentFile();
 		String trashDes = f1.getPath().toString() + "/Trash";
-		while (!mails.isEmpty()) {
+		while (mails != null && !mails.isEmpty()) {
 			moved.set((File) (mails.get(0)));
-			moved.move(trashDes);
+			try {
+				moved.move(trashDes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			mails.remove(0);
 		}
 	}
@@ -256,10 +313,15 @@ public class MyApp implements IApp {
 	public void moveEmails(final ILinkedList mails, final IFolder des) {
 		// TODO Auto-generated method stub
 		MyFolder desfolder = (MyFolder) des;
-		while (!mails.isEmpty()) {
+		while (mails != null && !mails.isEmpty()) {
 			MyFolder moved = new MyFolder();
 			moved.set((File) (mails.get(0)));
-			moved.move(desfolder.path);
+			try {
+				moved.move(desfolder.path);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			mails.remove(0);
 		}
 	}
@@ -275,24 +337,25 @@ public class MyApp implements IApp {
 	 */
 	@Override
 	public boolean compose(final IMail email) {
-		MyMail mail = null;
-		try {
-			mail = new MyMail(((MyMail) (email)).from,
-					((MyMail) (email)).receivers, ((MyMail) (email)).subject,
-					((MyMail) (email)).message, ((MyMail) (email)).attachments);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		MyMail newMail = (MyMail) email;
+		MyFolder access = new MyFolder();
+		File index1 = new File("../Mail Server/Users/Index.txt");
+		DoubleLinkedList list = new DoubleLinkedList();
+		list = access.listInsideTxt(index1);
+		String to = new String();
+		int i = 0;
+		while (i < newMail.receivers.size()) {
+			to = (String) newMail.receivers.dequeue();
+			if (!list.contains(to)) {
+				return false;
+			}
 		}
-		mail.equals((MyMail) email);
-		if (mail.from == null || mail.subject == null
-				|| mail.receivers.size() == 0 || mail.receivers == null) {
-			return false;
-		}
+		/**
+		 * all main fields are not null and all recievers are not fake emails.
+		 */
 		return true;
 	}
 
 	public static void main(String[] args) {
-		new SignInForm();
 	}
 }

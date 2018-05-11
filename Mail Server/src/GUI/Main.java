@@ -137,7 +137,7 @@ public class Main {
 		MyFolder getFolders = new MyFolder();
 		getFolders.set(trash);
 		DoubleLinkedList names = new DoubleLinkedList();
-		names = getFolders.listFilesForFolder();
+		names = getFolders.listFolders();
 		while (!names.isEmpty()) {
 			File msg = new File(trash.getPath() + "/" + (String) names.get(0)
 					+ "/" + "Message.txt");
