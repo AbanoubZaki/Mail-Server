@@ -79,17 +79,30 @@ public class MyMail implements IMail {
 			String Drafts = "../Mail Server/Users/" + from + "/Drafts";
 			SimpleDateFormat dateFormatter1 = new SimpleDateFormat("h-m-s a");
 			time = dateFormatter1.format(now).toString();
-			
+
 			totalMsg.createFolder(Drafts, "null " + time);
-			totalMsg.createFile(Drafts + "/" + "null " + time, "/Message.txt");
+			totalMsg.createFile(Drafts + "/null " + time, "/Message.txt");
+			totalMsg.createFile(Drafts + "/null " + time, "Index.txt");
+			/**
+			 * write the attachments in the index file of the mail in drafts.
+			 */
+			FileWriter fw3 = new FileWriter("../Mail Server/Users/" + from
+					+ "/Drafts/null " + time + "/Index.txt");
+			PrintWriter pw3 = new PrintWriter(fw3);
+
 			while (attachments != null && !attachments.isEmpty()) {
 				access.sendCopy((String) (attachments.get(0)),
 						Drafts + "/null" + " " + time);
+				pw3.println((String) (attachments.get(0)));
 				attachments.remove(0);
 			}
+			pw3.close();
+
+			/**
+			 * write the message in a txt file.
+			 */
 			FileWriter fw1 = null;
-			fw1 = new FileWriter(
-					Drafts + "/null " + time + "/Message.txt");
+			fw1 = new FileWriter(Drafts + "/null " + time + "/Message.txt");
 			PrintWriter pw1 = new PrintWriter(fw1);
 			pw1.println(date);
 			pw1.println(time);
@@ -99,7 +112,7 @@ public class MyMail implements IMail {
 			pw1.println(message);
 			pw1.close();
 		}
-		
+
 		/**
 		 * read all users that already have accounts
 		 */
@@ -113,14 +126,25 @@ public class MyMail implements IMail {
 
 			totalMsg.createFolder(Drafts, to + " " + time);
 			totalMsg.createFile(Drafts + "/" + to + " " + time, "/Message.txt");
+
+			totalMsg.createFile(Drafts + "/" + to + " " + time, "Index.txt");
+			/**
+			 * write the attachments in the index file of the mail in drafts.
+			 */
+			FileWriter fw3 = new FileWriter(
+					Drafts + "/" + to + " " + time + "/Index.txt");
+			PrintWriter pw3 = new PrintWriter(fw3);
+
 			/**
 			 * add attachments to the mail in the server.
 			 */
 			while (attachments != null && !attachments.isEmpty()) {
 				access.sendCopy((String) (attachments.get(0)),
 						Drafts + "/" + to + " " + time);
+				pw3.println((String) (attachments.get(0)));
 				attachments.remove(0);
 			}
+			pw3.close();
 			FileWriter fw1 = null;
 			fw1 = new FileWriter(
 					Drafts + "/" + to + " " + time + "/Message.txt");
@@ -173,6 +197,7 @@ public class MyMail implements IMail {
 			String to = (String) receivers.dequeue();
 			String inbox = "../Mail Server/Users/" + to + "/" + "/Inbox";
 			receivers.enqueue(to);
+
 			/**
 			 * check if recievers have accounts or fake ones.
 			 */
@@ -180,6 +205,7 @@ public class MyMail implements IMail {
 				return false;
 			}
 			access.createFolder(inbox, from + " " + time);
+
 			/**
 			 * add the recievers to contacts of the sender.
 			 */
@@ -190,16 +216,27 @@ public class MyMail implements IMail {
 			totalMsg.createFolder(sentMails, to + " " + time);
 			totalMsg.createFile(sentMails + "/" + to + " " + time,
 					"/Message.txt");
+			totalMsg.createFile(sentMails + "/" + to + " " + time, "Index.txt");
+
+			/**
+			 * write the attachments in the index file of the mail in drafts.
+			 */
+			FileWriter fw3 = new FileWriter(
+					sentMails + "/" + to + " " + time + "/Index.txt");
+			PrintWriter pw3 = new PrintWriter(fw3);
+
 			/**
 			 * add attachments to the mail in the server.
 			 */
-			while (!attachments.isEmpty()) {
+			while (attachments != null && !attachments.isEmpty()) {
 				access.sendCopy((String) (attachments.get(0)),
 						sentMails + "/" + to + " " + time);
 				access.sendCopy((String) (attachments.get(0)),
 						inbox + "/" + from + " " + time);
+				pw3.println((String) (attachments.get(0)));
 				attachments.remove(0);
 			}
+			pw3.close();
 			FileWriter fw1 = null;
 			fw1 = new FileWriter(
 					sentMails + "/" + to + " " + time + "/Message.txt");
@@ -212,6 +249,8 @@ public class MyMail implements IMail {
 			pw1.println(message);
 			pw1.close();
 			access.sendCopy(sentMails + "/" + to + " " + time + "/Message.txt",
+					inbox + "/" + from + " " + time);
+			access.sendCopy(sentMails + "/" + to + " " + time + "/Index.txt",
 					inbox + "/" + from + " " + time);
 			k++;
 		}

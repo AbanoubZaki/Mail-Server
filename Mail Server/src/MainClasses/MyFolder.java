@@ -47,6 +47,12 @@ public class MyFolder implements IFolder {
 		path = des;
 		name = n;
 		f1 = new File(des + "/" + n);
+		File index = new File(des + "/Index.txt");
+		DoubleLinkedList list;
+		list = listInsideTxt(index);
+		if (list.contains(n)) {
+			return;
+		}
 		System.out.println(f1.mkdirs());
 		/**
 		 * add the new folder to index file.
@@ -196,6 +202,7 @@ public class MyFolder implements IFolder {
 
 	/**
 	 * used to delete the mail permanently from the user's account.
+	 * @throws IOException 
 	 */
 	public void delPermanent(File dir) {
 		if (dir.isDirectory()) {
@@ -204,10 +211,58 @@ public class MyFolder implements IFolder {
 				delPermanent(new File(dir, children[i]));
 			}
 		}
+		/**
+		 * remove the name of the folder from the index of the old destination.
+		 */
+		DoubleLinkedList list = new DoubleLinkedList();
+		list = listInsideTxt(new File(dir.getParent() + "/Index.txt"));
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).equals(dir.getName())) {
+				list.remove(i);
+				break;
+			}
+		}
+		/**
+		 * write on index after deleting.
+		 */
+		FileWriter fw1 = null;
+		try {
+			fw1 = new FileWriter(dir.getParent() + "/Index.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter pw1 = new PrintWriter(fw1);
+		while (list != null && !list.isEmpty()) {
+			pw1.println(list.get(0));
+			list.remove(0);
+		}
+		pw1.close();
 		dir.delete();
 		return;
 	}
 
+	/**
+	 * renames a folder.
+	 * 
+	 * @param folder
+	 * @param newName
+	 */
+	public boolean rename(String folder, String newName) {
+		File old = new File(folder);
+		File index = new File(old.getParent() + "/Index.txt");
+		DoubleLinkedList list;
+		list = listInsideTxt(index);
+		if (list.contains(newName)) {
+			return false;
+		}
+		list.add(newName);
+		
+		File n = new File(old.getParent() + "/" + newName);
+		old.renameTo(n);
+		return true;
+	}
+	
 	/**
 	 * gets all the folders in a folder.
 	 * 

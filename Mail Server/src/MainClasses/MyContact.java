@@ -228,7 +228,9 @@ public class MyContact implements IContact {
 			list.remove(0);
 		}
 		pw1.close();
-		
+		/**
+		 * delete the total folder of this account.
+		 */
 		MyFolder access = new MyFolder();
 		File f = new File("../Mail Server/Users/" + email);
 		access.delPermanent(f);
