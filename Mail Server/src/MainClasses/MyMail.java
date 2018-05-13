@@ -198,12 +198,6 @@ public class MyMail implements IMail {
 			String inbox = "../Mail Server/Users/" + to + "/" + "/Inbox";
 			receivers.enqueue(to);
 
-			/**
-			 * check if recievers have accounts or fake ones.
-			 */
-			if (!list.contains(to)) {
-				return false;
-			}
 			access.createFolder(inbox, from + " " + time);
 
 			/**

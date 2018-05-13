@@ -122,22 +122,14 @@ public class MyContact implements IContact {
 	 * @param newName
 	 * @param email
 	 */
-	public void renameUsername(String oldName, String newName, String email) {
-		File indexTxt = new File("../Mail Server/Users/" + email + "/Info.txt");
+	public void renameUsername(String newName, String email) {
+		File infoTxt = new File("../Mail Server/Users/" + email + "/Info.txt");
 		DoubleLinkedList list = new DoubleLinkedList();
-		list = access.listInsideTxt(indexTxt);
-		int i = 0;
-		while (i < list.size) {
-			if (list.get(i).equals(oldName)) {
-				list.remove(i);
-				list.add(i, newName);
-				break;
-			}
-			i++;
-		}
+		list = access.listInsideTxt(infoTxt);
+		list.set(0, newName);
 		FileWriter fw1 = null;
 		try {
-			fw1 = new FileWriter(indexTxt.getPath());
+			fw1 = new FileWriter(infoTxt.getPath());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,7 +142,34 @@ public class MyContact implements IContact {
 		pw1.close();
 	}
 
-	public void addAccount(String oldEmail, String newEmail, String newPass) {
+	public void changePassword(String newPassword, String email) {
+		File infoTxt = new File("../Mail Server/Users/" + email + "/Info.txt");
+		DoubleLinkedList list = new DoubleLinkedList();
+		list = access.listInsideTxt(infoTxt);
+		list.set(2, newPassword);
+		FileWriter fw1 = null;
+		try {
+			fw1 = new FileWriter(infoTxt.getPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter pw1 = new PrintWriter(fw1);
+		while (!list.isEmpty()) {
+			pw1.println(list.get(0));
+			list.remove(0);
+		}
+		pw1.close();
+	}
+	/**
+	 * 
+	 * @param oldEmail
+	 * @param newEmail
+	 * @param newPass
+	 * @return
+	 */
+	public boolean addAccount(String oldEmail, String newEmail,
+			String newPass) {
 		/**
 		 * read info txt file of the old email.
 		 */
@@ -158,31 +177,42 @@ public class MyContact implements IContact {
 				"../Mail Server/Users/" + oldEmail + "/Info.txt");
 		DoubleLinkedList list = new DoubleLinkedList();
 		list = access.listInsideTxt(infoTxt);
-		
-		
+
 		MyContact contact = new MyContact((String) (list.get(0)), newEmail,
 				newPass);
 		/**
 		 * try to sign up with the new email.
 		 */
 		if (server.signup(contact)) {
+			DoubleLinkedList oldEmails = new DoubleLinkedList();
+			oldEmails.add(list.get(1));
+			int i = 3;
+			while (i < list.size()) {
+				oldEmails.add(list.get(i));
+				i++;
+			}
 			/**
-			 * write the new email in the info of the old one.
+			 * write the new email in the info of the old ones.
 			 */
 			FileWriter fw1 = null;
-			try {
-				fw1 = new FileWriter(infoTxt.getPath(), true);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			i = 0;
+			while (i < oldEmails.size()) {
+				infoTxt = new File("../Mail Server/Users/"
+						+ (String) oldEmails.get(i) + "/Info.txt");
+				try {
+					fw1 = new FileWriter(infoTxt.getPath(), true);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				PrintWriter pw1 = new PrintWriter(fw1);
+				pw1.append(newEmail);
+				pw1.println();
+				pw1.close();
+				i++;
 			}
-			PrintWriter pw1 = new PrintWriter(fw1);
-			pw1.append(newEmail);
-			pw1.println();
-			pw1.close();
-			
+
 			/**
-			 * write the old email in the info of the new one.
+			 * write the old emails in the info of the new one.
 			 */
 			infoTxt = new File(
 					"../Mail Server/Users/" + newEmail + "/Info.txt");
@@ -192,19 +222,28 @@ public class MyContact implements IContact {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			pw1 = new PrintWriter(fw1);
-			pw1.append(oldEmail);
-			pw1.println();
+			PrintWriter pw1 = new PrintWriter(fw1);
+			i = 0;
+			while (i < oldEmails.size()) {
+				pw1.append((String) oldEmails.get(i));
+				pw1.println();
+				i++;
+			}
 			pw1.close();
+			return true;
 		}
+		return false;
 	}
-	
+
+	/**
+	 * 
+	 * @param email
+	 */
 	public void deleteAccount(String email) {
 		/**
 		 * read info txt file of the old email.
 		 */
-		File index = new File(
-				"../Mail Server/Users/Index.txt");
+		File index = new File("../Mail Server/Users/Index.txt");
 		DoubleLinkedList list = new DoubleLinkedList();
 		list = access.listInsideTxt(index);
 		int i = 0;
@@ -235,5 +274,5 @@ public class MyContact implements IContact {
 		File f = new File("../Mail Server/Users/" + email);
 		access.delPermanent(f);
 	}
-	
+
 }

@@ -26,6 +26,20 @@ import Interfaces.ISort;
 public class MyApp implements IApp {
 
 	/**
+	 * sorted emails.
+	 */
+	DoubleLinkedList sorted = new DoubleLinkedList();
+	/**
+	 * filtered emails.
+	 */
+	DoubleLinkedList filtered = new DoubleLinkedList();
+	/**
+	 * a linked list of 10 sized arrays.
+	 */
+	DoubleLinkedList arrays = new DoubleLinkedList();
+	
+
+	/**
 	 * Sign in to the application.
 	 * 
 	 * @param email
@@ -131,28 +145,28 @@ public class MyApp implements IApp {
 		File f2 = new File("../Mail Server/Users/" + mycontact.email);
 		File f3 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Sent Mails");
-		File sentIn = new File(
-				"../Mail Server/Users/" + mycontact.email + "/Sent Mails/Index.txt");
+		File sentIn = new File("../Mail Server/Users/" + mycontact.email
+				+ "/Sent Mails/Index.txt");
 		File f6 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Drafts");
-		File draftsIn = new File(
-				"../Mail Server/Users/" + mycontact.email + "/Drafts/Index.txt");
+		File draftsIn = new File("../Mail Server/Users/" + mycontact.email
+				+ "/Drafts/Index.txt");
 		File f7 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Trash");
 		File trashIn = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Trash/Index.txt");
 		File f9 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Contacts");
-		File contactsIn = new File(
-				"../Mail Server/Users/" + mycontact.email + "/Contacts/Index.txt");
+		File contactsIn = new File("../Mail Server/Users/" + mycontact.email
+				+ "/Contacts/Index.txt");
 		File f4 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Inbox");
 		File inboxIn = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Inbox/Index.txt");
 		File f5 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Starred");
-		File starredIn = new File(
-				"../Mail Server/Users/" + mycontact.email + "/Starred/Index.txt");
+		File starredIn = new File("../Mail Server/Users/" + mycontact.email
+				+ "/Starred/Index.txt");
 		File f22 = new File(
 				"../Mail Server/Users/" + mycontact.email + "/Info.txt");
 		File f23 = new File(
@@ -175,12 +189,12 @@ public class MyApp implements IApp {
 			contactsIn.createNewFile();
 			inboxIn.createNewFile();
 			starredIn.createNewFile();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		/**
 		 * write user's email in index.txt file.
 		 */
@@ -207,7 +221,7 @@ public class MyApp implements IApp {
 			pw1.println(mycontact.email);
 			pw1.close();
 		}
-		
+
 		/**
 		 * write user's information in info.txt file.
 		 */
@@ -224,13 +238,14 @@ public class MyApp implements IApp {
 		pw2.println(mycontact.email);
 		pw2.println(mycontact.pass);
 		pw2.close();
-		
+
 		/**
 		 * write user's information in info.txt file.
 		 */
 		FileWriter fw3 = null;
 		try {
-			fw3 = new FileWriter("../Mail Server/Users/" + mycontact.email + "/Index.txt");
+			fw3 = new FileWriter(
+					"../Mail Server/Users/" + mycontact.email + "/Index.txt");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -243,7 +258,7 @@ public class MyApp implements IApp {
 		pw3.println("Sent Mails");
 		pw3.println("Starred");
 		pw3.close();
-		
+
 		return true;
 
 	}
@@ -252,26 +267,50 @@ public class MyApp implements IApp {
 	 * This function should be called before reading from the index file and
 	 * apply the sort and search parameters.
 	 * 
-	 * @param folder currently shown, can be null.
-	 * @param filter to apply search, can be null.
-	 * @param sort to apply sort.
+	 * @param folder
+	 *            currently shown, can be null.
+	 * @param filter
+	 *            to apply search, can be null.
+	 * @param sort
+	 *            to apply sort.
 	 */
 	@Override
 	public void setViewingOptions(final IFolder folder, final IFilter filter,
 			final ISort sort) {
-		
+		MyFolder fol = new MyFolder();
+		fol = (MyFolder) folder;
+		if (sort == null) {
+			MyFilter filt = (MyFilter) filter;
+			filt.setDirectory(fol.path);
+			filtered = filt.objects;
+		} else {
+			MySort sorting = (MySort) sort;
+			sorting.setDirectory(fol.path);
+			sorted = sorting.sorted;
+		}
 	}
 
 	/**
 	 * You should use setViewingOptions function first.
 	 * 
-	 * @param page to handle paging.
+	 * @param page
+	 *            to handle paging.
 	 * @return list of emails.
 	 */
 	@Override
 	public IMail[] listEmails(final int page) {
-		// TODO Auto-generated method stub
-		
+		int i = 0;
+		int j = 0;
+		String[] ten = new String[10];
+		while (i<sorted.size) {
+			ten[j] = (String) sorted.get(i);
+			j++;
+			i++;
+			if(j == 10) {
+				arrays.add(ten);
+				j=0;
+			}
+		}
 		return null;
 	}
 
@@ -284,17 +323,17 @@ public class MyApp implements IApp {
 	@Override
 	public void deleteEmails(final ILinkedList mails) {
 		// TODO Auto-generated method stub
-		MyFolder moved = new MyFolder();
-		moved.set((File) (mails.get(0)));
-		File f1 = moved.f1.getParentFile();
-		f1 = f1.getParentFile();
-		String trashDes = f1.getPath().toString() + "/Trash";
+		MyFolder access = new MyFolder();
+		File moved = new File((String) mails.get(0));
+		File folder = moved.getParentFile();
+		folder = folder.getParentFile();
+		String trashDes = folder.getPath() + "/Trash";
 		while (mails != null && !mails.isEmpty()) {
-			moved.set((File) (mails.get(0)));
+			moved = new File((String) mails.get(0));
 			try {
-				moved.move(trashDes);
+				access.set(moved);
+				access.move(trashDes);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			mails.remove(0);
@@ -315,7 +354,8 @@ public class MyApp implements IApp {
 		MyFolder desfolder = (MyFolder) des;
 		while (mails != null && !mails.isEmpty()) {
 			MyFolder moved = new MyFolder();
-			moved.set((File) (mails.get(0)));
+			File destination = new File((String) (mails.get(0)));
+			moved.set(destination);
 			try {
 				moved.move(desfolder.path);
 			} catch (IOException e) {

@@ -15,44 +15,58 @@ import DataStructures.Stacks;
 import Interfaces.ISort;
 
 public class MySort implements ISort {
+
+	String folderPath;
+	String sortingType;
+	MyPriorityQueue queue = new MyPriorityQueue();
+	DoubleLinkedList sorted = new DoubleLinkedList();
+
+	public MySort(String sortType)
+			throws IOException, ParseException {
+		sortingType = sortType;
+		switch (sortType) {
+		case "Date":
+			sorted = sortDate();
+			break;
+		case "Priority":
+			queue = sortPriority();
+			break;
+		}
+	}
+
+	public void setDirectory(String path) {
+		folderPath = path;
+	}
 	/**
 	 * sorts by priority.
 	 * 
 	 * @param directory
 	 * @throws IOException
 	 */
-	public MyPriorityQueue sortPriority(File directory) throws IOException {
-		MyFolder myfolder = new MyFolder();
-		myfolder.set(directory);
+	public MyPriorityQueue sortPriority() throws IOException {
+		File index = new File(folderPath + "/Index.txt");
 		DoubleLinkedList mails = new DoubleLinkedList();
-		mails = myfolder.listFolders();
+		MyFolder access = new MyFolder();
+		mails = access.listInsideTxt(index);
 		MyPriorityQueue q = new MyPriorityQueue();
 		while (mails != null && !mails.isEmpty()) {
 			int priority = new Integer(4);
-			File mail = new File(directory.getPath() + "/" + mails.get(0));
-			File txt = new File(directory.getPath() + "/" + mails.get(0) + "/"
+			File mail = new File(folderPath + "/" + mails.get(0));
+			File txt = new File(folderPath + "/" + mails.get(0) + "/"
 					+ "Message.txt");
+			File attachments = new File(mail.getPath() + "/Index.txt");
 			mails.remove(0);
 			/**
 			 * read the mail folder (txt + attachments).
 			 */
-			DoubleLinkedList insideMail = new DoubleLinkedList();
-			myfolder.set(mail);
-			insideMail = myfolder.listFiles();
-			if (insideMail.size > 1) {
+			DoubleLinkedList messg = new DoubleLinkedList();
+			DoubleLinkedList attach = new DoubleLinkedList();
+			messg = access.listInsideTxt(txt);
+			attach = access.listInsideTxt(attachments);
+			if (attach.size > 0) {
 				priority--;
 			}
-			/**
-			 * read the txt file.
-			 */
-			DoubleLinkedList insideTxt = new DoubleLinkedList();
-			BufferedReader in = new BufferedReader(new FileReader(txt));
-			String temp = new String();
-			while ((temp = in.readLine()) != null) {
-				insideTxt.add(temp);
-			}
-			in.close();
-			if (insideTxt.size > 6) {
+			if (messg.size > 6) {
 				priority--;
 			}
 			q.insert(mail, priority);
@@ -68,13 +82,13 @@ public class MySort implements ISort {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public DoubleLinkedList sortDate(File directory)
+	public DoubleLinkedList sortDate()
 			throws IOException, ParseException {
-		MyFolder myfolder = new MyFolder();
-		myfolder.set(directory);
 		DoubleLinkedList mails = new DoubleLinkedList();
 		DoubleLinkedList sortedMails = new DoubleLinkedList();
-		mails = myfolder.listFolders();
+		MyFolder access = new MyFolder();
+		File index = new File(folderPath + "/Index.txt");
+		mails = access.listInsideTxt(index);
 		int i = 0;
 		Date[] dates = new Date[mails.size];
 		HashMap<Date, String> mailsDates = new HashMap<>();
@@ -83,7 +97,7 @@ public class MySort implements ISort {
 		 * array.
 		 */
 		while (i < mails.size) {
-			File txt = new File(directory.getPath() + "/" + mails.get(i) + "/"
+			File txt = new File(folderPath + "/" + mails.get(i) + "/"
 					+ "Message.txt");
 			/**
 			 * read the txt file.

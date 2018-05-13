@@ -202,7 +202,8 @@ public class MyFolder implements IFolder {
 
 	/**
 	 * used to delete the mail permanently from the user's account.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	public void delPermanent(File dir) {
 		if (dir.isDirectory()) {
@@ -253,16 +254,41 @@ public class MyFolder implements IFolder {
 		File index = new File(old.getParent() + "/Index.txt");
 		DoubleLinkedList list;
 		list = listInsideTxt(index);
+		/**
+		 * check if the new name already exists.
+		 */
 		if (list.contains(newName)) {
 			return false;
 		}
-		list.add(newName);
-		
+		/**
+		 * the new name doesn't exist so replace the old one with the new one.
+		 */
+		for (int i = 0; i < list.size; i++) {
+			if (list.get(i).equals(old.getName())) {
+				list.set(i, newName);
+				break;
+			}
+		}
+		/**
+		 * then print the modified names on the index.
+		 */
 		File n = new File(old.getParent() + "/" + newName);
 		old.renameTo(n);
+		PrintWriter pw = null;
+		try {
+			FileWriter fw = new FileWriter(index);
+			pw = new PrintWriter(fw);
+			for (int i = 0; i < list.size; i++) {
+				pw.println(list.get(i));
+			}
+			fw.close();
+			pw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
-	
+
 	/**
 	 * gets all the folders in a folder.
 	 * 
