@@ -118,7 +118,12 @@ public class Trash {
 				}
 				MyFolder mf = new MyFolder();
 				mf.set(new File(path + "Trash/" + list.getSelectedValue()));
-				mf.move(path + s);
+				try {
+					mf.move(path + s);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				refreshList(path);
 			}
 		});
