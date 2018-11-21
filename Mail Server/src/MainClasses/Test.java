@@ -1,7 +1,5 @@
 package MainClasses;
 
-import java.io.File;
-
 public class Test {
 
 	public MyContact contact = new MyContact("bebo", "bebo@aka.com", "123");

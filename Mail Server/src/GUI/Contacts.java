@@ -43,7 +43,7 @@ public class Contacts {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JList list = new JList((ListModel) null);
+		JList<Object> list = new JList<Object>((ListModel<Object>) null);
 		list.setValueIsAdjusting(true);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setSelectedIndex(0);
